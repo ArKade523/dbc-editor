@@ -6,6 +6,10 @@ Created by Kade Angell
 
 Built with `Wails v2.5.1` and [shadcn's CLI](https://ui.shadcn.com/docs/cli)
 
+### Demo Images
+![image](docs/demo_image1.png)
+![image](docs/demo_image2.png)
+
 ### Getting dev env set up
 ```console
 cd frontend

@@ -13,7 +13,7 @@ export function Toolbar() {
     }
   }, [])
   return (
-    <div className="toolbar flex items-center space-x-2 p-2 border-b">
+    <div className="pl-16 p-1 toolbar flex items-center space-x-2 border-b">
       <Button variant="ghost" className="no-drag" onClick={onOpenClick}>
         Open
       </Button>

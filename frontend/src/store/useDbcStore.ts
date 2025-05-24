@@ -7,6 +7,7 @@ interface DbcState {
   files: dbc.DBCFile[];
   fetchFiles: () => Promise<void>;
   pushFile: (file: dbc.DBCFile) => void;
+  popFile: (filename: string) => void;
 }
 
 export const useDbcStore = create<DbcState>()(
@@ -22,6 +23,12 @@ export const useDbcStore = create<DbcState>()(
       // guard: always treat get().files as an array
       const current = get().files || []
       set({ files: [...current, file] }, false, "pushFile")
+    },
+
+    popFile: (filename: string) => {
+      // guard: always treat get().files as an array
+      const current = get().files || []
+      set({ files: current.filter((x) => x.filename !== filename) }, false, "popFile")
     },
   }))
 );

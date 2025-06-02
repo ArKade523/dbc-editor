@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 	"raydoc.dev/dbc-editor/dbc"
@@ -46,6 +47,48 @@ func (a *App) shutdown(ctx context.Context) {
 // Greet returns a greeting for the given name
 func (a *App) Greet(name string) string {
 	return fmt.Sprintf("Hello %s, It's show time!", name)
+}
+
+func (a *App) SaveFile(idx int) error {
+    if idx < 0 || idx >= len(a.dbcFiles) {
+        return fmt.Errorf("SaveFile: index %d out of range", idx)
+    }
+    dbcFile := a.dbcFiles[idx]
+
+    if err := dbcFile.Save(dbcFile.FileName); err != nil {
+        return fmt.Errorf("could not save DBC: %w", err)
+    }
+
+    return nil
+}
+
+func (a *App) SaveFileAs(idx int) error {
+    if idx < 0 || idx >= len(a.dbcFiles) {
+        return fmt.Errorf("SaveFile: index %d out of range", idx)
+    }
+    dbcFile := a.dbcFiles[idx]
+
+    path, err := runtime.SaveFileDialog(a.ctx, runtime.SaveDialogOptions{
+        Title:           "Save DBC File",
+				DefaultFilename: dbcFile.FileName[strings.LastIndex(dbcFile.FileName, "/")+1:], // oneliner to get last element of string split
+        Filters: []runtime.FileFilter{
+            {DisplayName: "DBC Files", Pattern: "*.dbc"},
+            {DisplayName: "All Files", Pattern: "*.*"},
+        },
+    })
+    if err != nil {
+        return err
+    }
+
+    if path == "" {
+        return nil
+    }
+    
+    if err := dbcFile.Save(path); err != nil {
+        return fmt.Errorf("could not save DBC: %w", err)
+    }
+
+    return nil
 }
 
 func (a *App) ParseDBC() error {

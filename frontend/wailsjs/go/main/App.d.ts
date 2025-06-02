@@ -7,3 +7,7 @@ export function GetDBCFiles():Promise<Array<dbc.DBCFile>>;
 export function Greet(arg1:string):Promise<string>;
 
 export function ParseDBC():Promise<void>;
+
+export function SaveFile(arg1:number):Promise<void>;
+
+export function SaveFileAs(arg1:number):Promise<void>;
